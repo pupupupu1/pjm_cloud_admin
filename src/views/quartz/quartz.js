@@ -37,6 +37,9 @@ export default {
         this.fetchData()
     },
     methods: {
+        refreshView(data){
+          this.fetchData()
+        },
         add() {
             this.addDialogInfo.show=true
         },
@@ -78,8 +81,30 @@ export default {
             console.log(data)
             this.editDialogInfo.show=true
         },
+        deleteThis(index, rows, data) {
+            this.$confirm('确定删除它吗?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+               //data
+               let params={
+                   id:data.id
+               }
+                pjmapi.pjmapi(params, 'pjm-service-quartz/scheduleJob/delete', 'quartz').then(res => {
+                    this.$notify({
+                        message: "已经删除"
+                    });
+                    this.fetchData()
+                }).catch(error=>{
+                    this.$notify({
+                        message: error
+                    });
+                })
+            })
+        },
         stopThis(index, rows, data) {
-            this.$confirm('确定停止它吗?' + data.id, '提示', {
+            this.$confirm('确定停止它吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'

@@ -5,10 +5,14 @@ import {
 } from 'element-ui'
 import store from '@/store'
 import tokenUtil from './tokenUtils.js'
+import {
+    resetTokenAndClearUser
+} from './index.js'
 
 // create an axios instance
 const service = axios.create({
-    baseURL: 'http://47.94.233.146:1220/', // url = base url + request url
+    // baseURL: 'http://47.94.233.146:1220/', // url = base url + request url
+    baseURL: '',
     // withCredentials: true, // send cookies when cross-domain requests
     timeout: 50000 // request timeout
 })
@@ -49,20 +53,26 @@ service.interceptors.response.use(
     response => {
 
         const res = response.data
+        const header = response.headers
         if (res.code == '0' || res.code == 200) {
             console.log('requesetsuccess-----', res)
+            console.log("there is header",header)
+            console.log(header.authorization != undefined)
+            if (header.authorization != undefined) {
+                console.log("response中返回了新的token")
+                tokenUtil.setToken(header.authorization)
+            }
             return res
         } else {
-            if (res.code === '403') {
+            if (res.code == '403' || res.code == '401') {
                 // to re-login
                 MessageBox.confirm('你的登陆已经过期，请重新登陆！', '重新登陆', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(() => {
-                    store.dispatch('login').then(() => {
-                        location.reload()
-                    })
+                    resetTokenAndClearUser()
+                    location.reload()
                 })
             } else {
                 // 其它错误弹出错误信息

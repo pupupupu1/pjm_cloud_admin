@@ -62,10 +62,11 @@
 
                     </template> -->
                 </el-table-column>
-                <el-table-column align="center" fixed="right" label="操作" width="220">
+                <el-table-column align="center" fixed="right" label="操作" width="280">
                     <template slot-scope="scope">
                         <el-button size="mini" type="success" @click="details(scope.row)">查看</el-button>
                         <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
+                        <el-button size="mini" type="danger" @click="deleteThis(scope.$index, tableData, scope.row)">删除</el-button>
                         <el-button v-show="scope.row.status == 0" size="mini" type="danger" @click="stopThis(scope.$index, tableData, scope.row)">暂停</el-button>
                         <el-button v-show="scope.row.status == 1" size="mini" type="success" @click="startThis(scope.$index, tableData, scope.row)">启用</el-button>
                     </template>

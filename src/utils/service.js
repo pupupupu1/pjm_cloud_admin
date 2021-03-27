@@ -6,6 +6,7 @@ import tokenUtil from './tokenUtils.js'
 
 export function callService(url, params, htmlname) {
     let baseUrl = 'http://47.94.233.146:1220/'
+    // let baseUrl = ''
     if (tokenUtil.getToken() || tokenUtil.getUsername() || url == "pjm-service-user/user/login") {
         const data = JSON.stringify(params)
         const config = {

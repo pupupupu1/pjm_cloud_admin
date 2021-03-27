@@ -40,7 +40,7 @@ export default {
     methods: {
         addMember() {
             console.log(this.user);
-            api.pjmapi(this.user, 'user/insert', 'addmember').then(res => {
+            api.pjmapi(this.user, 'pjm-service-user/user/insert', 'addmember').then(res => {
                 if (res.code == 200 || res.code == 0) {
                     this.$notify({
                         message: '添加成功'
