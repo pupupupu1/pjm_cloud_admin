@@ -3,8 +3,10 @@ import pjmapi from '../../api/pjm_module.js'
 export default {
     data() {
         return {
+            now:'',
             Loading: false,
             pdata: "Padta",
+            addWilteLisData:{},
             total: 5,
             currentPage: 1,
             pageSize: 20,
@@ -36,8 +38,11 @@ export default {
         this.fetchData()
     },
     methods: {
-        add() {
+        add(type,pid) {
             this.addDialogInfo.show=true
+            this.addWilteLisData.type=type
+            this.addWilteLisData.parentId=pid
+            this.now=new Date().getTime()
         },
         toggleSelection(rows) {
             if (rows) {
@@ -77,8 +82,8 @@ export default {
             console.log(data)
             this.editDialogInfo.show=true
         },
-        stopThis(index, rows, data) {
-            this.$confirm('确定停止它吗?' + data.id, '提示', {
+        deleteThis(index, rows, data) {
+            this.$confirm('确定删除它吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
@@ -87,15 +92,14 @@ export default {
                let params={
                    ids:[data.id]
                }
-                pjmapi.pjmapi(params, 'pjm-service-quartz/scheduleJob/pause', 'quartz').then(res => {
+                pjmapi.pjmapi(params, 'pjm-service-nacos/whiteListFilter/delete', 'whiteList').then(res => {
                     this.$notify({
-                        message: res.msg
+                        message: "已删除",
+                        type:"success"
                     });
-                    rows[index].status=1
+                    this.fetchData()
                 }).catch(error=>{
-                    this.$notify({
-                        message: error
-                    });
+
                 })
             })
         },

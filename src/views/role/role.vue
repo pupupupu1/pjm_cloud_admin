@@ -43,7 +43,7 @@
                     <template slot-scope="scope">
                         <el-button size="mini" type="success" @click="details(scope.row)">查看</el-button>
                         <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="stopThis(scope.$index, tableData, scope.row)">删除</el-button>
+                        <el-button size="mini" type="danger" @click="deleteThis(scope.$index, tableData, scope.row)">删除</el-button>
 
                     </template>
                 </el-table-column>

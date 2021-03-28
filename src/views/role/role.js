@@ -77,21 +77,21 @@ export default {
             console.log(data)
             this.editDialogInfo.show=true
         },
-        stopThis(index, rows, data) {
-            this.$confirm('确定停止它吗?' + data.id, '提示', {
+        deleteThis(index, rows, data) {
+            this.$confirm('确定停止它吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                //data
                let params={
-                   ids:[data.id]
+                   id:data.id
                }
-                pjmapi.pjmapi(params, 'pjm-service-quartz/scheduleJob/pause', 'quartz').then(res => {
+                pjmapi.pjmapi(params, 'pjm-service-user/role/delete', 'role').then(res => {
                     this.$notify({
-                        message: res.msg
+                        message: '已删除'
                     });
-                    rows[index].status=1
+                    this.fetchData()
                 }).catch(error=>{
                     this.$notify({
                         message: error

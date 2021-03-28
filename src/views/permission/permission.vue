@@ -1,6 +1,6 @@
 <template>
     <div id="app" class="app-container">
-        <el-dialog width="800px" title="添加信息" :visible.sync="addDialogInfo.show"><addPermission /></el-dialog>
+        <el-dialog width="800px" title="添加信息" :visible.sync="addDialogInfo.show"><addPermission :key="now" :tochild="addDialogData" /></el-dialog>
         <el-dialog width="800px" title="查看信息" :visible.sync="detailDialogInfo.show"><detailsPermission /></el-dialog>
         <el-dialog width="800px" title="编辑信息" :visible.sync="editDialogInfo.show"><editPermission /></el-dialog>
         <div>
@@ -18,7 +18,7 @@
                 </el-col>
                 <el-col :span="3">
                     <el-row type="flex" justify="end">
-                        <el-form :inline="true" size="small"><el-button size="mini" type="primary" @click="add">添加</el-button></el-form>
+                        <el-form :inline="true" size="small"><el-button size="mini" type="primary" @click="add(null)">添加</el-button></el-form>
                     </el-row>
                 </el-col>
             </el-row>
@@ -27,7 +27,7 @@
                 ref="multipleTable"
                 v-loading.lock="Loading"
                 size="mini"
-                :tree-props="{children: 'children'}"
+                :tree-props="{ children: 'children' }"
                 row-key="id"
                 tooltip-effect="dark"
                 :data="tableData"
@@ -44,12 +44,12 @@
                 <el-table-column :show-overflow-tooltip="true" prop="permissionCode" label="编号" min-width="15%" />
                 <el-table-column :show-overflow-tooltip="true" prop="permissionTypeCode" label="类型" min-width="20%" />
                 <el-table-column :show-overflow-tooltip="true" prop="permissionApplicationCode" label="所属应用" min-width="10%" />
-                <el-table-column align="center" fixed="right" label="操作" width="220">
+                <el-table-column align="center" fixed="right" label="操作" width="280">
                     <template slot-scope="scope">
+                        <el-button v-show="scope.row.parentId == null" size="mini" type="success" @click="add(scope.row.id)">新增</el-button>
                         <el-button size="mini" type="success" @click="details(scope.row)">查看</el-button>
                         <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="stopThis(scope.$index, tableData, scope.row)">删除</el-button>
-                        
+                        <el-button size="mini" type="danger" @click="deleteThis(scope.$index, tableData, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>

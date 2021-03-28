@@ -3,6 +3,8 @@ import pjmapi from '../../api/pjm_module.js'
 export default {
     data() {
         return {
+            now:'',
+            addDialogData:{},
             Loading: false,
             pdata: "Padta",
             total: 5,
@@ -37,8 +39,10 @@ export default {
         this.fetchData()
     },
     methods: {
-        add() {
+        add(pid) {
             this.addDialogInfo.show=true
+            this.addDialogData.parentId=pid
+            this.now=new Date().getTime()
         },
         toggleSelection(rows) {
             if (rows) {
@@ -78,21 +82,21 @@ export default {
             console.log(data)
             this.editDialogInfo.show=true
         },
-        stopThis(index, rows, data) {
-            this.$confirm('确定停止它吗?' + data.id, '提示', {
+        deleteThis(index, rows, data) {
+            this.$confirm('确定删除它吗?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
                 type: 'warning'
             }).then(() => {
                //data
                let params={
-                   ids:[data.id]
+                   id:data.id
                }
-                pjmapi.pjmapi(params, 'pjm-service-quartz/scheduleJob/pause', 'quartz').then(res => {
+                pjmapi.pjmapi(params, 'pjm-service-user/permission/delete','permission').then(res => {
                     this.$notify({
-                        message: res.msg
+                        message:"已删除"
                     });
-                    rows[index].status=1
+                    this.fetchData()
                 }).catch(error=>{
                     this.$notify({
                         message: error

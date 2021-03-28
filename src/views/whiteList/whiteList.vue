@@ -1,6 +1,6 @@
 <template>
     <div id="app" class="app-container">
-        <el-dialog width="800px" title="添加信息" :visible.sync="addDialogInfo.show"><addWhiteList /></el-dialog>
+        <el-dialog width="800px" title="添加信息" :visible.sync="addDialogInfo.show"><addWhiteList :tochild="addWilteLisData" :key="now" /></el-dialog>
 
         <el-dialog width="800px" title="编辑信息" :visible.sync="editDialogInfo.show"><editWhiteList /></el-dialog>
         <div>
@@ -15,7 +15,7 @@
                 </el-col>
                 <el-col :span="3">
                     <el-row type="flex" justify="end">
-                        <el-form :inline="true" size="small"><el-button size="mini" type="primary" @click="add">添加</el-button></el-form>
+                        <el-form :inline="true" size="small"><el-button size="mini" type="primary" @click="add('1',null)">添加</el-button></el-form>
                     </el-row>
                 </el-col>
             </el-row>
@@ -50,8 +50,9 @@
                 </el-table-column>
                 <el-table-column align="center" fixed="right" label="操作" width="220">
                     <template slot-scope="scope">
+                        <el-button v-show="scope.row.filterType == '1'" size="mini" type="success" @click="add('2',scope.row.id)">新增</el-button>
                         <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="stopThis(scope.$index, tableData, scope.row)">删除</el-button>
+                        <el-button size="mini" type="danger" @click="deleteThis(scope.$index, tableData, scope.row)">删除</el-button>
                     </template>
                 </el-table-column>
             </el-table>
