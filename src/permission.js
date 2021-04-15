@@ -10,9 +10,13 @@ import {
 } from './utils'
 import tokenUtil from './utils/tokenUtils.js'
 import pjmapi from './api/pjm_module.js'
+
+import {Decrypt,Encrypt} from '@/utils/crypto';
+
 // 是否有菜单数据
 let hasMenus = false
 router.beforeEach(async (to, from, next) => {
+    // console.log(Decrypt("77+9Thrvv73vv71OTCsD77+9Cl/vv71tAg==","pjm",""))
     document.title = getDocumentTitle(to.meta.title)
     LoadingBar.start()
     if (localStorage.getItem('Authorization')) {

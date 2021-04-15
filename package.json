@@ -11,6 +11,7 @@
   "dependencies": {
     "axios": "^0.19.0",
     "core-js": "^3.4.3",
+    "crypto-js": "^4.0.0",
     "element-ui": "^2.9.2",
     "view-design": "^4.0.2",
     "vue": "^2.6.10",

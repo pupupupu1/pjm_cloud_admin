@@ -5,8 +5,13 @@
 </template>
 
 <script>
+    
+import {Decrypt,Encrypt} from '@/utils/crypto';
 export default {
     name: 'App',
+    created() {
+        // console.log(Decrypt("77+9Thrvv73vv71OTCsD77+9Cl/vv71tAg==","pjm",""))
+    }
 }
 </script>
 
