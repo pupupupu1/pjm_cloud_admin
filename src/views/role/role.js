@@ -3,6 +3,10 @@ import pjmapi from '../../api/pjm_module.js'
 export default {
     data() {
         return {
+            now:'',
+            setPermissionDialogInfo:{
+              show:false  
+            },
             Loading: false,
             pdata: "Padta",
             total: 5,
@@ -36,6 +40,11 @@ export default {
         this.fetchData()
     },
     methods: {
+        setPermission(data){
+        	this.setPermissionDialogInfo.show = true
+        	this.setPermissionDialogInfo.roleInfo = data
+        	this.now=new Date().getTime()
+        	},
         add() {
             this.addDialogInfo.show=true
         },

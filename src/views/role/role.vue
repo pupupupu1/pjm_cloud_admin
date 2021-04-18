@@ -3,6 +3,7 @@
         <el-dialog width="800px" title="添加信息" :visible.sync="addDialogInfo.show"><addRole /></el-dialog>
         <el-dialog width="800px" title="查看信息" :visible.sync="detailDialogInfo.show"><detailsRole /></el-dialog>
         <el-dialog width="800px" title="编辑信息" :visible.sync="editDialogInfo.show"><editRole /></el-dialog>
+        <el-dialog width="800px" title="设置权限" :visible.sync="setPermissionDialogInfo.show"><roleSetPermission :tochild="setPermissionDialogInfo" :key="now" /></el-dialog>
         <div>
             <el-row v-show="show.List" type="flex" justify="space-between">
                 <el-col :span="21">
@@ -24,7 +25,7 @@
                 ref="multipleTable"
                 v-loading.lock="Loading"
                 size="mini"
-                :tree-props="{children: 'children'}"
+                :tree-props="{ children: 'children' }"
                 row-key="id"
                 tooltip-effect="dark"
                 :data="tableData"
@@ -42,9 +43,22 @@
                 <el-table-column align="center" fixed="right" label="操作" width="220">
                     <template slot-scope="scope">
                         <el-button size="mini" type="success" @click="details(scope.row)">查看</el-button>
-                        <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button>
-                        <el-button size="mini" type="danger" @click="deleteThis(scope.$index, tableData, scope.row)">删除</el-button>
 
+                        <el-dropdown>
+                            <el-button type="danger" size="mini">
+                                更多
+                                <i class="el-icon-arrow-down el-icon--right"></i>
+                            </el-button>
+                            <el-dropdown-menu slot="dropdown">
+                                <el-dropdown-item>
+                                    <el-button type="primary" size="mini" style="width: 100%" @click="setPermission(scope.row)">配置权限</el-button>
+                                </el-dropdown-item>
+                                <el-dropdown-item><el-button type="primary" size="mini" style="width: 100%" @click="edit(scope.row)">编辑</el-button></el-dropdown-item>
+                                <el-dropdown-item>
+                                    <el-button type="primary" size="mini" style="width: 100%" @click="deleteThis(scope.$index, tableData, scope.row)">删除</el-button>
+                                </el-dropdown-item>
+                            </el-dropdown-menu>
+                        </el-dropdown>
                     </template>
                 </el-table-column>
             </el-table>
@@ -69,12 +83,14 @@ import roleJs from './role.js';
 import addRole from './componment/addRole.vue';
 import detailsRole from './componment/detailsRole.vue';
 import editRole from './componment/editRole.vue';
+import roleSetPermission from './componment/role_set_permission.vue';
 export default {
     name: 'permission',
     components: {
         addRole,
         detailsRole,
-        editRole
+        editRole,
+        roleSetPermission
     },
     mixins: [roleJs]
 };

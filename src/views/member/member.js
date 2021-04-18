@@ -3,6 +3,10 @@ import pjmapi from '../../api/pjm_module.js'
 export default {
     data() {
         return {
+            now:'',
+            setRoleDialogInfo:{
+                show:false
+            },
             Loading: false,
             pdata: "Padta",
             total: 5,
@@ -31,6 +35,19 @@ export default {
         this.fetchData()
     },
     methods: {
+        setRole(data){
+        	this.setRoleDialogInfo.show = true
+        	this.setRoleDialogInfo.userInfo = data
+        	this.now=new Date().getTime()
+        },
+        resetPwd(data) {
+        	pjmapi.pjmapi(data,"/pjm-service-user/user/resetPassword","user").then(res=>{
+        		this.$notify({
+       			type:'success',
+        			message:"密码重置成功，新密码是："+res.data.userPassword
+        		})
+        	})
+        },
         add() {
             this.show.List = false
             this.show.detail = false

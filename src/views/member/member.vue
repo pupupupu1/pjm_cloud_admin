@@ -1,5 +1,6 @@
 <template>
   <div id="app" class="app-container">
+      <el-dialog width="800px" title="设置角色" :visible.sync="setRoleDialogInfo.show"><userSetRole :tochild="setRoleDialogInfo" :key="now"/></el-dialog>
     <div>
       <addMember v-show="show.add" :show="show" />
       <detailsMember v-show="show.detail" :data="pdata" :show="show" />
@@ -52,12 +53,25 @@
             />
           </template>
         </el-table-column>
-        <el-table-column align="center" fixed="right" label="操作" width="110">
+        <el-table-column align="center" fixed="right" label="操作" width="220">
           <template slot-scope="scope">
             <!-- <el-button size="mini" type="success" @click="details(scope.row)">查看</el-button> -->
             <!-- <el-button size="mini" type="primary" @click="edit(scope.row)">编辑</el-button> -->
             <el-button v-show="scope.row.enabled==1" size="mini" type="danger" @click="unEnableThis(scope.$index, tableData, scope.row)">禁用</el-button>
             <el-button v-show="scope.row.enabled==0" size="mini" type="success" @click="enableThis(scope.$index, tableData, scope.row)">启用</el-button>
+			<el-dropdown>
+			  <el-button type="danger" size="mini">更多<i class="el-icon-arrow-down el-icon--right"></i></el-button>
+			  <el-dropdown-menu slot="dropdown">
+				<el-dropdown-item>
+				  <el-button type="primary" size="mini" style="width: 100%"
+				    @click="setRole(scope.row)">配置角色</el-button>
+				</el-dropdown-item>
+			    <el-dropdown-item>
+			      <el-button type="primary" size="mini" style="width: 100%"
+			        @click="resetPwd(scope.row)">密码重置</el-button>
+			    </el-dropdown-item>
+			  </el-dropdown-menu>
+			</el-dropdown>
           </template>
         </el-table-column>
       </el-table>
@@ -81,11 +95,13 @@
 import memberJs from './member.js';
 import addMember from './componment/addMember.vue';
 import detailsMember from './componment/detailMember.vue';
+import userSetRole from './componment/user_set_role.vue'
 export default {
     name: 'Member',
     components: {
         addMember: addMember,
-        detailsMember: detailsMember
+        detailsMember: detailsMember,
+        userSetRole:userSetRole
     },
     mixins: [memberJs]
 };
